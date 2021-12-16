@@ -1,5 +1,6 @@
 package sorts
 
+// 插入排序
 func InsertSort(nums []int) []int {
 	for i := 1; i < len(nums); i++ {
 		if nums[i] < nums[i-1] {
