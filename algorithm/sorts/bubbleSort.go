@@ -1,7 +1,7 @@
 package sorts
 
 // 冒泡排序
-func BubbleSort(arr []int) []int {
+func BubbleSort(arr []int) {
 	for i := 0; i < len(arr)-1; i++ {
 		for j := 0; j < len(arr)-i-1; j++ {
 			if arr[j] > arr[j+1] {
@@ -9,5 +9,4 @@ func BubbleSort(arr []int) []int {
 			}
 		}
 	}
-	return arr
 }
