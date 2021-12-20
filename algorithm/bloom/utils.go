@@ -23,6 +23,9 @@ func location(h []uint64, i uint64) uint64 {
 }
 
 func str2Bytes(s string) []byte {
+	// TODO: 了解强转化与标准转化的一些区别
+
+	// 强转化
 	sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
 	bh := reflect.SliceHeader{
 		Data: sh.Data,
@@ -30,4 +33,7 @@ func str2Bytes(s string) []byte {
 		Cap:  sh.Len,
 	}
 	return *(*[]byte)(unsafe.Pointer(&bh))
+
+	// 标准转化
+	// return []byte(s)
 }

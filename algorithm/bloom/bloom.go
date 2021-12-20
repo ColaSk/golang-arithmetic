@@ -31,7 +31,7 @@ type BloomFilter struct {
 
 // 返回位置
 // & (f.m - 1) 取余运算的快捷方式
-func (f *BloomFilter) location(h uint64) (uint64, uint64) {
+func (f *BloomFilter) Location(h uint64) (uint64, uint64) {
 	slot := (h / bitPerByte) & (f.size - 1)
 	mod := h & mod7
 	return slot, mod
@@ -43,7 +43,7 @@ func (f *BloomFilter) Add(data []byte) {
 
 	for i := uint64(0); i < f.hashnum; i++ {
 		loc := location(h, i)
-		slot, mod := f.location(loc)
+		slot, mod := f.Location(loc)
 		f.keys[slot] |= 1 << mod
 	}
 }
@@ -56,20 +56,23 @@ func (f *BloomFilter) AddString(s string) {
 
 func (f *BloomFilter) ExistsString(s string) bool {
 	data := str2Bytes(s)
-	return f.exists(data)
+	return f.Exists(data)
 }
 
-func (f *BloomFilter) exists(data []byte) bool {
+func (f *BloomFilter) Exists(data []byte) bool {
 	h := baseHash(data)
 	for i := uint64(0); i < f.hashnum; i++ {
 		loc := location(h, i)
-		slot, mod := f.location(loc)
+		slot, mod := f.Location(loc)
 		if f.keys[slot]&(1<<mod) == 0 {
 			return false
 		}
 	}
 	return true
 }
+
+// 确保接口被实现
+var _ Bloom = (*BloomFilter)(nil)
 
 func New(size uint64, hashnum uint64) *BloomFilter {
 	/*
