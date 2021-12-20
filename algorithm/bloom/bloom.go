@@ -29,7 +29,7 @@ type BloomFilter struct {
 	keys    []byte
 }
 
-// location returns the bit position in byte array
+// 返回位置
 // & (f.m - 1) 取余运算的快捷方式
 func (f *BloomFilter) location(h uint64) (uint64, uint64) {
 	slot := (h / bitPerByte) & (f.size - 1)
@@ -56,10 +56,10 @@ func (f *BloomFilter) AddString(s string) {
 
 func (f *BloomFilter) ExistsString(s string) bool {
 	data := str2Bytes(s)
-	return f.Exists(data)
+	return f.exists(data)
 }
 
-func (f *BloomFilter) Exists(data []byte) bool {
+func (f *BloomFilter) exists(data []byte) bool {
 	h := baseHash(data)
 	for i := uint64(0); i < f.hashnum; i++ {
 		loc := location(h, i)
@@ -76,6 +76,8 @@ func New(size uint64, hashnum uint64) *BloomFilter {
 	* hashnum: 散列函数个数
 	* size: 过滤器大小
 	 */
+
+	// 将size拉长为2^n
 	log2 := uint64(math.Ceil(math.Log2(float64(size))))
 
 	filter := &BloomFilter{
