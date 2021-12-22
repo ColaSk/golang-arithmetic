@@ -1,7 +1,5 @@
 package tree
 
-import "fmt"
-
 // 二叉树 节点
 // 为了简单将数据设为int型
 type BinaryTreeNode struct {
@@ -32,16 +30,6 @@ func (node *BinaryTreeNode) GetData() int {
 
 func (node *BinaryTreeNode) SetData(data int) {
 	node.data = data
-}
-
-func (node *BinaryTreeNode) Preorder() {
-
-	if node == nil {
-		return
-	}
-	fmt.Println(node.data, " ")
-	node.left.Preorder()
-	node.right.Preorder()
 }
 
 func NewBinNode(value int, left, right *BinaryTreeNode) *BinaryTreeNode {
